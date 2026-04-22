@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class HelloController {
     @GetMapping("/")
     public String hello() {
-        return "Hello AWS Spring!";
+        return "두번째 클라우드 스프링 배포 연습";
     }
 }
