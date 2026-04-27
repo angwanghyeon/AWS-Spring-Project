@@ -1,5 +1,7 @@
 # AWS Spring Boot CI/CD 프로젝트
-
+## 아키텍처 다이어그램
+![alt text](<프로젝트 배포 흐름 구도.png>)
+> GitHub Actions → Docker Hub → EC2 → Nginx → Blue-Green 구조의 CI/CD 파이프라인
 ## 1. 프로젝트 개요
 
 Spring Boot 애플리케이션을 AWS EC2 환경에 배포하고, Docker와 GitHub Actions를 활용해 이미지 기반 CI/CD 파이프라인을 구축한 프로젝트입니다.
