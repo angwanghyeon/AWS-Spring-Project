@@ -6,13 +6,13 @@ BLUE_PORT=8081
 GREEN_PORT=8082
 CONTAINER_BLUE="first-project-blue"
 CONTAINER_GREEN="first-project-green"
-NGINX_CONF="/etc/nginx/conf.d/service-url.inc"
+NGINX_CONF="/etc/nginx/nginx.conf"
 
 echo "🐳 최신 Docker 이미지 가져오기"
 docker pull $IMAGE_NAME
 
 echo "📌 현재 운영 포트 확인"
-CURRENT_PORT=$(grep -oE '127.0.0.1:[0-9]+' $NGINX_CONF | grep -oE '[0-9]+')
+CURRENT_PORT=$(grep "proxy_pass" $NGINX_CONF | grep -oE '[0-9]+' | tail -1)
 
 if [ "$CURRENT_PORT" == "$BLUE_PORT" ]; then
   NEW_PORT=$GREEN_PORT
@@ -35,6 +35,7 @@ echo "🚀 새 컨테이너 실행"
 docker run -d \
   --name $NEW_CONTAINER \
   -p $NEW_PORT:8080 \
+  --restart always \
   $IMAGE_NAME
 
 echo "🩺 헬스 체크 시작"
@@ -56,7 +57,7 @@ do
 done
 
 echo "🔁 Nginx 포트 전환"
-echo "set \$service_url http://127.0.0.1:$NEW_PORT;" | sudo tee $NGINX_CONF
+sudo sed -i "s|proxy_pass http://127.0.0.1:[0-9]*;|proxy_pass http://127.0.0.1:$NEW_PORT;|" $NGINX_CONF
 
 echo "🔄 Nginx reload"
 sudo nginx -t
