@@ -1,12 +1,23 @@
 # AWS Spring Boot CI/CD 프로젝트
 ## 아키텍처 다이어그램
 ![alt text](<프로젝트 배포 흐름 구도.png>)
-> GitHub Actions → Docker Hub → EC2 → Nginx → Blue-Green 구조의 CI/CD 파이프라인
+> GitHub Actions → Docker Hub → EC2 → Nginx → Blue-Green 기반 무중단 배포 CI/CD 파이프라인
+
+---
+
 ## 1. 프로젝트 개요
 
-Spring Boot 애플리케이션을 AWS EC2 환경에 배포하고, Docker와 GitHub Actions를 활용해 이미지 기반 CI/CD 파이프라인을 구축한 프로젝트입니다.
+Spring Boot 애플리케이션을 AWS EC2 환경에 배포하고,  
+Docker와 GitHub Actions를 활용해 **이미지 기반 CI/CD 파이프라인**을 구축한 프로젝트입니다.
 
-단순 배포를 넘어서 Nginx Reverse Proxy, HTTPS, Docker Hub, Blue-Green 배포 전략을 적용하여 실무형 무중단 배포 구조를 구현했습니다.
+단순 배포를 넘어서 다음을 구현했습니다:
+
+- Nginx Reverse Proxy 기반 트래픽 제어
+- Blue-Green 배포를 통한 무중단 서비스 운영
+- Health Check 기반 배포 검증
+- 배포 실패 시 자동 롤백 구조
+
+👉 실무에서 사용하는 **안정적인 배포 환경을 직접 구현**하는 것을 목표로 했습니다.
 
 ---
 
@@ -28,6 +39,7 @@ Spring Boot 애플리케이션을 AWS EC2 환경에 배포하고, Docker와 GitH
 - GitHub Actions
 - Docker Buildx
 - Blue-Green Deployment
+- SSH 기반 자동 배포
 
 ---
 
@@ -36,18 +48,26 @@ Spring Boot 애플리케이션을 AWS EC2 환경에 배포하고, Docker와 GitH
 ```text
 Developer
    ↓
-GitHub Push
+Git Push
    ↓
 GitHub Actions
    ↓
-Docker Image Build
+Docker Image Build & Push
    ↓
-Docker Hub Push
+EC2 (SSH 접속)
    ↓
-EC2 Pull Image
+git pull + deploy.sh 실행
    ↓
-Docker Container Run
+Docker Container 실행 (Blue / Green)
    ↓
-Nginx Reverse Proxy
+Health Check 검증
+   ↓
+Nginx 트래픽 전환
    ↓
 User
+
+```
+4. 서비스 URL
+   API: http://52.79.195.249.nip.io
+   Health Check: http://52.79.195.249.nip.io/health
+   Swagger: http://52.79.195.249.nip.io/swagger-ui/index.html
