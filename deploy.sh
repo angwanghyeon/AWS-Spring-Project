@@ -41,7 +41,7 @@ docker run -d \
 echo "🩺 헬스 체크 시작"
 for i in {1..10}
 do
-  if curl -f http://localhost:$NEW_PORT/actuator/health > /dev/null 2>&1; then
+  if curl -f http://localhost:$NEW_PORT/health > /dev/null 2>&1; then
     echo "✅ 헬스 체크 성공"
     break
   fi
