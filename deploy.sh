@@ -52,6 +52,11 @@ do
   if [ $i -eq 10 ]; then
     echo "❌ 헬스 체크 실패"
     docker logs $NEW_CONTAINER
+
+    echo "🧹 실패한 새 컨테이너 제거"
+    docker stop $NEW_CONTAINER || true
+    docker rm $NEW_CONTAINER || true
+
     exit 1
   fi
 done
