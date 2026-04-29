@@ -5,6 +5,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import com.agh.firstproject.todo.exception.TodoNotFoundException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -24,6 +25,17 @@ public class GlobalExceptionHandler {
         Map<String, Object> response = new HashMap<>();
         response.put("status", 400);
         response.put("message", message);
+
+        return response;
+    }
+
+    @ExceptionHandler(TodoNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Map<String, Object> handleTodoNotFoundException(TodoNotFoundException e) {
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", 404);
+        response.put("message", e.getMessage());
 
         return response;
     }

@@ -4,6 +4,7 @@ import com.agh.firstproject.todo.entity.Todo;
 import com.agh.firstproject.todo.repository.TodoRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.agh.firstproject.todo.exception.TodoNotFoundException;
 
 import java.util.List;
 
@@ -29,13 +30,17 @@ public class TodoService {
     // 수정
     public Todo update(Long id, boolean completed) {
         Todo todo = todoRepository.findById(id)
-                .orElseThrow();
+                .orElseThrow(() -> new TodoNotFoundException(id));
+
         todo.setCompleted(completed);
         return todoRepository.save(todo);
     }
 
     // 삭제
     public void delete(Long id) {
-        todoRepository.deleteById(id);
+        Todo todo = todoRepository.findById(id)
+                .orElseThrow(() -> new TodoNotFoundException(id));
+
+        todoRepository.delete(todo);
     }
 }
