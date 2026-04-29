@@ -71,3 +71,27 @@ User
    API: http://52.79.195.249.nip.io
    Health Check: http://52.79.195.249.nip.io/health
    Swagger: http://52.79.195.249.nip.io/swagger-ui/index.html
+
+## 8. API 설계 개선
+
+### 8.1 DTO 기반 요청 처리
+
+- Map 대신 DTO를 사용하여 명확한 요청 구조 설계
+- 유지보수성과 가독성 향상
+
+### 8.2 Validation 적용
+
+- `@NotBlank`를 사용하여 입력값 검증
+- 잘못된 요청에 대해 400 응답 처리
+
+### 8.3 예외 처리 (Exception Handling)
+
+- GlobalExceptionHandler를 통해 예외를 일관된 JSON 형식으로 반환
+
+#### Validation 실패
+
+```json
+{
+  "status": 400,
+  "message": "내용은 필수입니다."
+}
