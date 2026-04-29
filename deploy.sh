@@ -35,6 +35,8 @@ echo "🚀 새 컨테이너 실행"
 docker run -d \
   --name $NEW_CONTAINER \
   -p $NEW_PORT:8080 \
+  --env-file /etc/first-project.env \
+  -e SPRING_PROFILES_ACTIVE=prod \
   --restart always \
   $IMAGE_NAME
 
