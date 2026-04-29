@@ -2,11 +2,13 @@ package com.agh.firstproject.todo.controller;
 
 import com.agh.firstproject.todo.entity.Todo;
 import com.agh.firstproject.todo.service.TodoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import com.agh.firstproject.todo.dto.TodoCreateRequest;
+import com.agh.firstproject.todo.dto.TodoUpdateRequest;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/todos")
@@ -21,14 +23,14 @@ public class TodoController {
     }
 
     @PostMapping
-    public Todo create(@RequestBody Map<String, String> request) {
-        return todoService.create(request.get("content"));
+    public Todo create(@Valid @RequestBody TodoCreateRequest request) {
+        return todoService.create(request.getContent());
     }
 
     @PutMapping("/{id}")
     public Todo update(@PathVariable Long id,
-                       @RequestBody Map<String, Boolean> request) {
-        return todoService.update(id, request.get("completed"));
+                       @RequestBody TodoUpdateRequest request) {
+        return todoService.update(id, request.getCompleted());
     }
 
     @DeleteMapping("/{id}")
