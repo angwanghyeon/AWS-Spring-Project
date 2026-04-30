@@ -7,8 +7,10 @@ import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@Schema(description = "Todo 생성 요청")
 public class TodoCreateRequest {
 
+    @NotBlank(message = "내용은 필수입니다.")
     @Schema(description = "할 일 내용", example = "운동하기")
     private String content;
 

@@ -31,7 +31,7 @@ public class TodoController {
         return ApiResponse.success(result);
     }
 
-    @Operation(summary = "Todo 생성")
+    @Operation(summary = "Todo 생성", description = "새로운 Todo를 생성합니다.")
     @PostMapping
     public ApiResponse<TodoResponse> create(@Valid @RequestBody TodoCreateRequest request) {
         Todo todo = todoService.create(request.getContent());
