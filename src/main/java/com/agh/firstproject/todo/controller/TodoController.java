@@ -10,9 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import com.agh.firstproject.todo.dto.TodoCreateRequest;
 import com.agh.firstproject.todo.dto.TodoUpdateRequest;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/todos")
@@ -32,25 +30,21 @@ public class TodoController {
     }
 
     @PostMapping
-    public TodoResponse create(@Valid @RequestBody TodoCreateRequest request) {
+    public ApiResponse<TodoResponse> create(@Valid @RequestBody TodoCreateRequest request) {
         Todo todo = todoService.create(request.getContent());
-        return new TodoResponse(todo);
+        return ApiResponse.success(new TodoResponse(todo));
     }
 
     @PutMapping("/{id}")
-    public TodoResponse update(@PathVariable Long id,
+    public ApiResponse<TodoResponse> update(@PathVariable Long id,
                        @RequestBody TodoUpdateRequest request) {
         Todo todo = todoService.update(id, request.getCompleted());
-        return new TodoResponse(todo);
+        return ApiResponse.success(new TodoResponse(todo));
     }
 
     @DeleteMapping("/{id}")
-    public Map<String, Object> delete(@PathVariable Long id) {
+    public ApiResponse<Void> delete(@PathVariable Long id) {
         todoService.delete(id);
-
-        Map<String, Object> response = new HashMap<>();
-        response.put("status", 200);
-        response.put("message", "삭제 완료");
-        return response;
+        return ApiResponse.success();
     }
 }
