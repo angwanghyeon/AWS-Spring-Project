@@ -1,5 +1,6 @@
 package com.agh.firstproject.todo.dto;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TodoCreateRequest {
 
-    @NotBlank(message = "내용은 필수입니다.")
+    @Schema(description = "할 일 내용", example = "운동하기")
     private String content;
+
 }

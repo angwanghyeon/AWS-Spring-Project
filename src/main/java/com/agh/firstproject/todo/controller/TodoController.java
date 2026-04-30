@@ -4,6 +4,7 @@ import com.agh.firstproject.common.ApiResponse;
 import com.agh.firstproject.todo.dto.TodoResponse;
 import com.agh.firstproject.todo.entity.Todo;
 import com.agh.firstproject.todo.service.TodoService;
+import io.swagger.v3.oas.annotations.Operation;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +20,7 @@ public class TodoController {
 
     private final TodoService todoService;
 
+    @Operation(summary = "전체 Todo 조회")
     @GetMapping
     public ApiResponse<List<TodoResponse>> getAll() {
         List<TodoResponse> result = todoService.getAll()
@@ -29,12 +31,14 @@ public class TodoController {
         return ApiResponse.success(result);
     }
 
+    @Operation(summary = "Todo 생성")
     @PostMapping
     public ApiResponse<TodoResponse> create(@Valid @RequestBody TodoCreateRequest request) {
         Todo todo = todoService.create(request.getContent());
         return ApiResponse.success(new TodoResponse(todo));
     }
 
+    @Operation(summary = "Todo 수정")
     @PutMapping("/{id}")
     public ApiResponse<TodoResponse> update(@PathVariable Long id,
                        @RequestBody TodoUpdateRequest request) {
@@ -42,6 +46,7 @@ public class TodoController {
         return ApiResponse.success(new TodoResponse(todo));
     }
 
+    @Operation(summary = "Todo 삭제")
     @DeleteMapping("/{id}")
     public ApiResponse<Void> delete(@PathVariable Long id) {
         todoService.delete(id);
