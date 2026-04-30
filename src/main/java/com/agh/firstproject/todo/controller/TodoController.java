@@ -1,5 +1,6 @@
 package com.agh.firstproject.todo.controller;
 
+import com.agh.firstproject.common.ApiResponse;
 import com.agh.firstproject.todo.dto.TodoResponse;
 import com.agh.firstproject.todo.entity.Todo;
 import com.agh.firstproject.todo.service.TodoService;
@@ -21,11 +22,13 @@ public class TodoController {
     private final TodoService todoService;
 
     @GetMapping
-    public List<TodoResponse> getAll() {
-        return todoService.getAll()
+    public ApiResponse<List<TodoResponse>> getAll() {
+        List<TodoResponse> result = todoService.getAll()
                 .stream()
                 .map(TodoResponse::new)
                 .toList();
+
+        return ApiResponse.success(result);
     }
 
     @PostMapping
